@@ -2,8 +2,8 @@
     CTFLearn Challenge 227: BruXOR
 
         GOAL: Brute force decrypt the XOR encryption of a message with an unknown key.
-            However, we can assume "flag" is likely contained in the decrypted text.
-            (Using "FLAG" instead gets close, but not close enough)
+              However, we can assume "flag" is likely contained in the decrypted text.
+              (Using "FLAG" instead gets close, but not close enough)
 
     by SolRAzure
 */

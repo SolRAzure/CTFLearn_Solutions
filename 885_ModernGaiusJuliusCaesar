@@ -1,0 +1,64 @@
+/*
+    CTFLearn Challenge 885: Modern Gaius Julius Caesar
+
+        GOAL: Brute force decrypt the Caesar Cipher of a provided message.
+                We can feel safe assuming "CTF" is in the decrypted text.
+                (BUH->CTF from message in challenge)
+
+        NOTE: Resulting key seems... high. But decrypted text works.
+
+    by SolRAzure
+*/
+
+#include<string>
+#include<iostream>
+
+
+int main()
+{
+    // Encrypted flag from question, along w/ known txt.
+    std::string msg = "BUH'tdy,|Bim5y~Bdt76yQ";
+    std::string known = "CTF";
+
+    // We're not in Rome anymore, so we have to do a bit of housekeeping
+    // for our quasi-caesar qwerty-cipher to work out. I hope.
+    std::string qwerty_r1_lo = "`1234567890-=";
+    std::string qwerty_r1_hi = "~!@#$%^&*()_+";
+    std::string qwerty_r2_lo = "qwertyuiop[]\\";
+    std::string qwerty_r2_hi = "QWERTYUIOP{}|";
+    std::string qwerty_r3_lo = "asdfghjkl;'";
+    std::string qwerty_r3_hi = "ASDFGHJKL:\"";
+    std::string qwerty_r4_lo = "zxcvbnm,./";
+    std::string qwerty_r4_hi = "ZXCVBNM<>?";
+
+    std::string keyboard[8] = {qwerty_r1_lo, qwerty_r1_hi,
+                               qwerty_r2_lo, qwerty_r2_hi,
+                               qwerty_r3_lo, qwerty_r3_hi,
+                               qwerty_r4_lo, qwerty_r4_hi};
+
+    int key = 1;
+    std::string test_str;
+
+    // Loop through the encrypted msg until the known text string is found.
+    // You also have to look-up which array we need. Sometimes I miss Python.
+    do{
+        test_str = "";
+        std::cout << "Testing key: " << key << std::endl;
+        for(int i = 0; i < msg.size(); i++){
+            for(int j = 0; j < 8; j++){
+                if(keyboard[j].find(msg[i]) != std::string::npos){
+                    test_str.push_back(keyboard[j][(keyboard[j].find(msg[i])+key-1) % keyboard[j].size()]);
+                }
+            }
+        }
+        std::cout << test_str << std::endl;
+        key++;
+    // std::string::npos is used to indicate no matches (== -1).
+    }while(test_str.find(known) == std::string::npos);
+
+    // Print out our flag, and= subtract the extra key increment.
+    std::cout << "\nFlag is: " << test_str << std::endl
+              << "Int key is: " << key-1 << std::endl;
+
+    return(0);
+}
